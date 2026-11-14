@@ -1,0 +1,39 @@
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: sales_analytics
+      POSTGRES_USER: analytics_admin
+      POSTGRES_PASSWORD: admin_demo_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./sql/readonly.sql:/docker-entrypoint-initdb.d/readonly.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U analytics_admin -d sales_analytics"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+  api:
+    build: .
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql+psycopg://analytics_user:analytics_pass@db:5432/sales_analytics
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+  dashboard:
+    build: .
+    command: streamlit run streamlit_app.py --server.address 0.0.0.0
+    environment:
+      API_URL: http://api:8000
+    depends_on:
+      - api
+    ports:
+      - "8501:8501"
+volumes:
+  pgdata:

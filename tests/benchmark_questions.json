@@ -1,0 +1,17 @@
+[
+  {"id": "B01", "category": "count", "question": "How many orders are in the database?", "tables": ["orders"], "expected_concepts": ["COUNT"]},
+  {"id": "B02", "category": "aggregation", "question": "What is the total revenue across all order items?", "tables": ["order_items"], "expected_concepts": ["SUM", "quantity", "unit_price"]},
+  {"id": "B03", "category": "aggregation", "question": "What is the average product price?", "tables": ["products"], "expected_concepts": ["AVG", "unit_price"]},
+  {"id": "B04", "category": "grouping", "question": "Show the number of customers in each city.", "tables": ["customers"], "expected_concepts": ["GROUP BY", "city", "COUNT"]},
+  {"id": "B05", "category": "grouping", "question": "Show revenue by product category.", "tables": ["products", "order_items"], "expected_concepts": ["JOIN", "GROUP BY", "SUM"]},
+  {"id": "B06", "category": "join", "question": "Which customers have placed orders?", "tables": ["customers", "orders"], "expected_concepts": ["JOIN"]},
+  {"id": "B07", "category": "ranking", "question": "Show the top five customers by total spending.", "tables": ["customers", "orders", "order_items"], "expected_concepts": ["JOIN", "SUM", "ORDER BY", "LIMIT"]},
+  {"id": "B08", "category": "ranking", "question": "Show the ten best-selling products by revenue.", "tables": ["products", "order_items"], "expected_concepts": ["JOIN", "SUM", "ORDER BY", "LIMIT"]},
+  {"id": "B09", "category": "time_series", "question": "Show monthly revenue for 2025.", "tables": ["orders", "order_items"], "expected_concepts": ["DATE_TRUNC", "GROUP BY"]},
+  {"id": "B10", "category": "filtering", "question": "List orders placed during 2025.", "tables": ["orders"], "expected_concepts": ["WHERE", "order_date"]},
+  {"id": "B11", "category": "segmentation", "question": "Compare total revenue by customer segment.", "tables": ["customers", "orders", "order_items"], "expected_concepts": ["JOIN", "GROUP BY", "SUM", "segment"]},
+  {"id": "B12", "category": "filtering", "question": "Which products belong to the Electronics category?", "tables": ["products"], "expected_concepts": ["WHERE", "category"]},
+  {"id": "B13", "category": "unsupported", "question": "What is the population of Mars?", "tables": [], "expected_concepts": ["reject"]},
+  {"id": "B14", "category": "unsupported", "question": "What is the current weather in Tokyo?", "tables": [], "expected_concepts": ["reject"]},
+  {"id": "B15", "category": "ambiguous", "question": "Show me the best customers.", "tables": ["customers", "orders", "order_items"], "expected_concepts": ["clarify business definition or use a stated metric"]}
+]
